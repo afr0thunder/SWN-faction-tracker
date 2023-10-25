@@ -1,1 +1,34 @@
 # SWN-faction-tracker
+
+# Create Sector Creator
+  * Produce a grid (8 x 10)
+  * Place stars
+    * random number of stars (1d10 + 20)
+    * Place stars randomly on the grid, need to be closer to edge if overlap
+    * Final 10 stars fit into open areas to prevent impassable area
+    * Give Name to each star
+  * Create primary habital worlds (1 at each star)
+    * roll two world tags
+    * roll temp
+    * roll biosphere
+    * roll population
+    * roll tech level
+    * add additional planets and features to the system
+    * give a sentence of description
+    * give each planet a name (unsettled planets can have a designation)
+  * Mark Politics and Trade Routes
+    * Identify stars systems in contact with eachother, 3 hexes is standard distance gicen averag tech level
+    * create potential borders and governments
+  * Add more details to major planets (all planets?)
+  * 
+
+# Objects
+* Stars
+* Worlds
+* events (conflicts, battles, crisis, other?)
+* major people
+* factions
+* ships, units, armies, etc
+* political entities
+* governments
+* 
