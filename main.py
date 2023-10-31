@@ -23,6 +23,9 @@ centerscreen = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
 
 
+grid = Sector(centerscreen, screen, seg_length=25)
+
+
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -34,7 +37,8 @@ while running:
     screen.fill(BACKGROUND_COLOR)
 
     pygame.draw.circle(screen, "red", player_pos, 40)
-    hex = Hex(centerscreen, screen)
+    grid.draw_grid()
+
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
