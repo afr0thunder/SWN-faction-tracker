@@ -53,11 +53,13 @@ class Sector:
 
     def _create_grid(self):
         array = []
+        x_spacing = 0.9
+        y_spacing = 1.2
         offset = math.sqrt(3) * self.hex_radius
         for row in range(self.grid_height):
             for col in range(self.grid_width):
-                x = offset * col
-                y = 1.5 * self.hex_radius * (row + 0.5 * (col % 2))
+                x = offset * col * x_spacing
+                y = 1.5 * self.hex_radius * (row + 0.5 * (col % 2)) * y_spacing
                 point = [x + self.corner[0], y + self.corner[1]]
                 array.append(point)
         return array
