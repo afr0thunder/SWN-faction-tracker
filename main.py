@@ -1,7 +1,7 @@
-# imports
+# import libraries
 import random
 import pygame
-from grid import Hex, Sector
+from grid import Hex, Sector, Grid_Window
 
 # ---------- COLORS ---------- #
 BACKGROUND_COLOR = "gray"
@@ -18,13 +18,12 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+# Define center screen mid point
 centerscreen = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
-
-
-grid = Sector(centerscreen, screen, seg_length=25)
-
+# Initiate left-hand grid screen
+grid_screen = Grid_Window(screen, screen.get_width() / 2, screen.get_height())
+sector = Sector((50,50), screen, seg_length=50)
 
 while running:
     # poll for events
@@ -33,22 +32,10 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # fill the screen with a color to wipe away anything from last frame
+    # update screen elements
     screen.fill(BACKGROUND_COLOR)
-
-    pygame.draw.circle(screen, "red", player_pos, 40)
-    grid.draw_grid()
-
-
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        player_pos.y -= SPEED * dt
-    if keys[pygame.K_s]:
-        player_pos.y += SPEED * dt
-    if keys[pygame.K_a]:
-        player_pos.x -= SPEED * dt
-    if keys[pygame.K_d]:
-        player_pos.x += SPEED * dt
+    grid_screen.draw_screen()
+    sector.draw_grid()
 
     # flip() the display to put your work on screen
     pygame.display.flip()
