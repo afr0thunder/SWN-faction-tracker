@@ -60,6 +60,9 @@ while running:
     # Reset clip area to the whole screen
     screen.set_clip(None)
 
+    # draw border
+    grid_screen.draw_border()
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP]:
         sector.corner_y -= NAVIGATE_INCREMENT

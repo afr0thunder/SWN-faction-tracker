@@ -97,5 +97,7 @@ class GridWindow:
 
     def draw_screen(self):
         pygame.draw.rect(self.grid_surface, self.color, ((0, 0), (self.width, self.height)))
-        pygame.draw.rect(self.grid_surface, self.border_color, ((0, 0), (self.width, self.height)), width=10)
         self.surface.blit(self.grid_surface, (self.x, self.y))
+
+    def draw_border(self):
+        pygame.draw.rect(self.surface, self.border_color, ((0, 0), (self.width, self.height)), width=10)
