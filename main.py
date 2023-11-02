@@ -1,7 +1,7 @@
 # import libraries
 import random
 import pygame
-from grid import Hex, Sector, Grid_Window
+from grid import Hex, Sector, GridWindow
 
 # ---------- COLORS ---------- #
 BACKGROUND_COLOR = "gray"
@@ -22,7 +22,7 @@ dt = 0
 centerscreen = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
 # Initiate left-hand grid screen
-grid_screen = Grid_Window(screen, screen.get_width() / 2, screen.get_height())
+grid_screen = GridWindow(screen, screen.get_width() / 2, screen.get_height())
 sector = Sector((50,50), screen, seg_length=50)
 
 while running:
@@ -35,7 +35,15 @@ while running:
     # update screen elements
     screen.fill(BACKGROUND_COLOR)
     grid_screen.draw_screen()
+
+    # Set clip area for the left-hand side of the screen
+    clip_area = pygame.Rect(0, 0, screen.get_width() / 2, screen.get_height())
+    screen.set_clip(clip_area)
+    # Draw hexagonal grid within the clip area
     sector.draw_grid()
+    # Reset clip area to the whole screen
+    screen.set_clip(None)
+
 
     # flip() the display to put your work on screen
     pygame.display.flip()

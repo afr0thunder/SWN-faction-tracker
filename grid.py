@@ -71,16 +71,21 @@ class Sector:
             Hex(loc, self.surface, color=self.color, length=self.hex_radius, width=self.line_width)
 
 
-class Grid_Window:
-    def __init__(self, surface, width, height, color='white', border_color='black'):
+class GridWindow:
+    def __init__(self, surface, width, height, x=0, y=0, color='white', border_color='black'):
         self.surface = surface
         self.width = width
+        self.x = x
+        self.y = y
         self.height = height
         self.color = color
         self.border_color = border_color
         self.position = ((0, 0), (self.width, self.height))
+        self.grid_surface = pygame.Surface((width, height))
         self.draw_screen()
 
     def draw_screen(self):
-        pygame.draw.rect(self.surface, self.color, self.position)
-        pygame.draw.rect(self.surface, self.border_color, self.position, width=10)
+        pygame.draw.rect(self.grid_surface, self.color, ((0, 0), (self.width, self.height)))
+        pygame.draw.rect(self.grid_surface, self.border_color, ((0, 0), (self.width, self.height)), width=10)
+        self.surface.blit(self.grid_surface, (self.x, self.y))
+
