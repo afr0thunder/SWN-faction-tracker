@@ -44,6 +44,20 @@ while running:
     # Reset clip area to the whole screen
     screen.set_clip(None)
 
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP]:
+        sector.corner = (sector.corner[0], sector.corner[1] - 10)
+    if keys[pygame.K_DOWN]:
+        sector.corner = (sector.corner[0], sector.corner[1] + 10)
+    if keys[pygame.K_LEFT]:
+        sector.corner = (sector.corner[0] - 10, sector.corner[1])
+    if keys[pygame.K_RIGHT]:
+        sector.corner = (sector.corner[0] + 10, sector.corner[1])
+    if keys[pygame.K_EQUALS]:
+        sector.hex_radius += 5
+    if keys[pygame.K_MINUS]:
+        sector.hex_radius -= 5
+
 
     # flip() the display to put your work on screen
     pygame.display.flip()
