@@ -1,7 +1,8 @@
 # import libraries
 import random
 import pygame
-from grid import Hex, Sector, GridWindow
+from left_grid import Hex, Sector, GridWindow
+from mouse import MousePosition
 
 # ---------- COLORS ---------- #
 BACKGROUND_COLOR = "gray"
@@ -12,7 +13,9 @@ SPEED = 300
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+width = 1280
+height = 720
+screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('SWN Faction Tracker')
 clock = pygame.time.Clock()
 running = True
@@ -21,9 +24,13 @@ dt = 0
 # Define center screen mid point
 centerscreen = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
+# Track mouse coordinates
+mouse = MousePosition()
+font = pygame.font.Font(None, 36)
+
 # Initiate left-hand grid screen
 grid_screen = GridWindow(screen, screen.get_width() / 2, screen.get_height())
-sector = Sector((50,50), screen, seg_length=50)
+sector = Sector((50, 50), screen, seg_length=50)
 
 while running:
     # poll for events
@@ -35,6 +42,11 @@ while running:
     # update screen elements
     screen.fill(BACKGROUND_COLOR)
     grid_screen.draw_screen()
+
+    #update mouse coordinates and display
+    mouse.update_position()
+    text = font.render(f'{mouse.mouse_x}, {mouse.mouse_y}', True, (255, 255, 255))
+    screen.blit(text, ((width * 0.75) - text.get_width() // 2, height // 2 - text.get_height() // 2))
 
     # Set clip area for the left-hand side of the screen
     clip_area = pygame.Rect(0, 0, screen.get_width() / 2, screen.get_height())
@@ -57,7 +69,6 @@ while running:
         sector.hex_radius += 5
     if keys[pygame.K_MINUS]:
         sector.hex_radius -= 5
-
 
     # flip() the display to put your work on screen
     pygame.display.flip()
