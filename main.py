@@ -1,7 +1,7 @@
-# imports
+# import libraries
 import random
 import pygame
-from grid import Hex, Sector
+from grid import Hex, Sector, GridWindow
 
 # ---------- COLORS ---------- #
 BACKGROUND_COLOR = "gray"
@@ -18,13 +18,12 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+# Define center screen mid point
 centerscreen = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
-
-
-grid = Sector(centerscreen, screen, seg_length=25)
-
+# Initiate left-hand grid screen
+grid_screen = GridWindow(screen, screen.get_width() / 2, screen.get_height())
+sector = Sector((50,50), screen, seg_length=50)
 
 while running:
     # poll for events
@@ -33,22 +32,32 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # fill the screen with a color to wipe away anything from last frame
+    # update screen elements
     screen.fill(BACKGROUND_COLOR)
+    grid_screen.draw_screen()
 
-    pygame.draw.circle(screen, "red", player_pos, 40)
-    grid.draw_grid()
-
+    # Set clip area for the left-hand side of the screen
+    clip_area = pygame.Rect(0, 0, screen.get_width() / 2, screen.get_height())
+    screen.set_clip(clip_area)
+    # Draw hexagonal grid within the clip area
+    sector.draw_grid()
+    # Reset clip area to the whole screen
+    screen.set_clip(None)
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        player_pos.y -= SPEED * dt
-    if keys[pygame.K_s]:
-        player_pos.y += SPEED * dt
-    if keys[pygame.K_a]:
-        player_pos.x -= SPEED * dt
-    if keys[pygame.K_d]:
-        player_pos.x += SPEED * dt
+    if keys[pygame.K_UP]:
+        sector.corner = (sector.corner[0], sector.corner[1] - 10)
+    if keys[pygame.K_DOWN]:
+        sector.corner = (sector.corner[0], sector.corner[1] + 10)
+    if keys[pygame.K_LEFT]:
+        sector.corner = (sector.corner[0] - 10, sector.corner[1])
+    if keys[pygame.K_RIGHT]:
+        sector.corner = (sector.corner[0] + 10, sector.corner[1])
+    if keys[pygame.K_EQUALS]:
+        sector.hex_radius += 5
+    if keys[pygame.K_MINUS]:
+        sector.hex_radius -= 5
+
 
     # flip() the display to put your work on screen
     pygame.display.flip()

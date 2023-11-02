@@ -2,6 +2,7 @@ import random
 import pygame
 import math
 
+
 class Hex:
     def __init__(self, center_point, surface, color='black', length=10, width=1):
         self.center = center_point
@@ -28,6 +29,7 @@ class Hex:
         p6 = [sum(x) for x in zip(s6, hex_center)]
 
         pygame.draw.polygon(self.surface, self.color, (p1, p2, p3, p4, p5, p6), self.width)
+
 
 class Sector:
     def __init__(self, grid_corner, surface, color='black', seg_length=10, line_width=1, grid_height=10, grid_width=8):
@@ -67,3 +69,23 @@ class Sector:
     def draw_grid(self):
         for loc in self.grid_array:
             Hex(loc, self.surface, color=self.color, length=self.hex_radius, width=self.line_width)
+
+
+class GridWindow:
+    def __init__(self, surface, width, height, x=0, y=0, color='white', border_color='black'):
+        self.surface = surface
+        self.width = width
+        self.x = x
+        self.y = y
+        self.height = height
+        self.color = color
+        self.border_color = border_color
+        self.position = ((0, 0), (self.width, self.height))
+        self.grid_surface = pygame.Surface((width, height))
+        self.draw_screen()
+
+    def draw_screen(self):
+        pygame.draw.rect(self.grid_surface, self.color, ((0, 0), (self.width, self.height)))
+        pygame.draw.rect(self.grid_surface, self.border_color, ((0, 0), (self.width, self.height)), width=10)
+        self.surface.blit(self.grid_surface, (self.x, self.y))
+
