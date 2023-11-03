@@ -1,6 +1,6 @@
 # SWN-faction-tracker
 
-# Create Sector Creator
+### Create Sector Creator
   * Produce a grid (8 x 10)
   * Place stars
     * random number of stars (1d10 + 20)
@@ -22,7 +22,7 @@
   * Add more details to major planets (all planets?)
   * 
 
-# Objects
+### Objects
 * Stars
 * Worlds
 * events (conflicts, battles, crisis, other?)
