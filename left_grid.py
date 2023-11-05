@@ -4,12 +4,13 @@ import math
 
 
 class Hex:
-    def __init__(self, center_point, surface, color='black', length=10, width=1):
+    def __init__(self, center_point, surface, mouse_position, color='black', length=10, width=1):
         self.center = center_point
         self.surface = surface
         self.color = color
         self.width = width
         self.length = length
+        self.current_mouse = mouse_position
         self.draw_hex(self.center)
 
     def draw_hex(self, hex_center):
@@ -28,19 +29,29 @@ class Hex:
         p5 = [sum(x) for x in zip(s5, hex_center)]
         p6 = [sum(x) for x in zip(s6, hex_center)]
 
+        adjustment = 0.75
+
+        if self.center[0] - (self.length * adjustment) < self.current_mouse[0] < self.center[0] + (
+                self.length * adjustment) and self.center[1] - (self.length * adjustment) < self.current_mouse[1] < \
+                self.center[1] + (self.length * adjustment):
+            self.color = 'cyan'
+            self.width = 0
+
         pygame.draw.polygon(self.surface, self.color, (p1, p2, p3, p4, p5, p6), self.width)
 
 
 class Sector:
     def __init__(self, grid_corner, surface, color='black', seg_length=10, line_width=1, grid_height=10, grid_width=8):
-        self.corner = grid_corner
+        self.corner_x = grid_corner[0]
+        self.corner_y = grid_corner[1]
         self.surface = surface
         self.color = color
         self.hex_radius = seg_length
         self.line_width = line_width
         self.grid_width = grid_width
         self.grid_height = grid_height
-        self.grid_array = self._create_grid()
+        self.grid_array = []
+        self.create_grid()
 
     def print_attributes(self):
         print(f'Corner: {self.corner}')
@@ -52,8 +63,7 @@ class Sector:
         print(f'Grid Columns: {self.grid_height}')
         print(f'Grid Array Length: {len(self.grid_array)}')
 
-
-    def _create_grid(self):
+    def create_grid(self):
         array = []
         x_spacing = 0.9
         y_spacing = 1.2
@@ -62,13 +72,14 @@ class Sector:
             for col in range(self.grid_width):
                 x = offset * col * x_spacing
                 y = 1.5 * self.hex_radius * (row + 0.5 * (col % 2)) * y_spacing
-                point = [x + self.corner[0], y + self.corner[1]]
+                point = [x + self.corner_x, y + self.corner_y]
                 array.append(point)
-        return array
 
-    def draw_grid(self):
+        self.grid_array = array
+
+    def draw_grid(self, mouse_position):
         for loc in self.grid_array:
-            Hex(loc, self.surface, color=self.color, length=self.hex_radius, width=self.line_width)
+            Hex(loc, self.surface, mouse_position, color=self.color, length=self.hex_radius, width=self.line_width)
 
 
 class GridWindow:
@@ -86,6 +97,7 @@ class GridWindow:
 
     def draw_screen(self):
         pygame.draw.rect(self.grid_surface, self.color, ((0, 0), (self.width, self.height)))
-        pygame.draw.rect(self.grid_surface, self.border_color, ((0, 0), (self.width, self.height)), width=10)
         self.surface.blit(self.grid_surface, (self.x, self.y))
 
+    def draw_border(self):
+        pygame.draw.rect(self.surface, self.border_color, ((0, 0), (self.width, self.height)), width=10)

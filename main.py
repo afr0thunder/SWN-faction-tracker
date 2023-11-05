@@ -10,6 +10,8 @@ HEX_COLOR = "cyan"
 
 # ---------- CONSTANTS ---------- #
 SPEED = 300
+ZOOM_INCREMENT = 1
+NAVIGATE_INCREMENT = 10
 
 # pygame setup
 pygame.init()
@@ -45,30 +47,35 @@ while running:
 
     #update mouse coordinates and display
     mouse.update_position()
-    text = font.render(f'{mouse.mouse_x}, {mouse.mouse_y}', True, (255, 255, 255))
+    mouse_position = (mouse.x, mouse.y)
+    text = font.render(f'{mouse.x}, {mouse.y}', True, (255, 255, 255))
     screen.blit(text, ((width * 0.75) - text.get_width() // 2, height // 2 - text.get_height() // 2))
 
     # Set clip area for the left-hand side of the screen
     clip_area = pygame.Rect(0, 0, screen.get_width() / 2, screen.get_height())
     screen.set_clip(clip_area)
     # Draw hexagonal grid within the clip area
-    sector.draw_grid()
+    sector.create_grid()
+    sector.draw_grid(mouse_position)
     # Reset clip area to the whole screen
     screen.set_clip(None)
 
+    # draw border
+    grid_screen.draw_border()
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP]:
-        sector.corner = (sector.corner[0], sector.corner[1] - 10)
+        sector.corner_y -= NAVIGATE_INCREMENT
     if keys[pygame.K_DOWN]:
-        sector.corner = (sector.corner[0], sector.corner[1] + 10)
+        sector.corner_y += NAVIGATE_INCREMENT
     if keys[pygame.K_LEFT]:
-        sector.corner = (sector.corner[0] - 10, sector.corner[1])
+        sector.corner_x -= NAVIGATE_INCREMENT
     if keys[pygame.K_RIGHT]:
-        sector.corner = (sector.corner[0] + 10, sector.corner[1])
+        sector.corner_x += NAVIGATE_INCREMENT
     if keys[pygame.K_EQUALS]:
-        sector.hex_radius += 5
+        sector.hex_radius += ZOOM_INCREMENT
     if keys[pygame.K_MINUS]:
-        sector.hex_radius -= 5
+        sector.hex_radius -= ZOOM_INCREMENT
 
     # flip() the display to put your work on screen
     pygame.display.flip()
