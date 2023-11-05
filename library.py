@@ -1,3 +1,4 @@
+# ---------- STAR/PLANET NAMES ---------- #
 # Planet/Star name prefixes
 name_prefix = {
     1: 'A',
