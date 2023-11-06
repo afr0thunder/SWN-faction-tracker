@@ -2110,3 +2110,17 @@ name_tag = {
     99: 'Roll again and combine',
     100: 'Roll on Prefix and Suffix Table'
 }
+
+# ---------- STAR PROPERTIES ---------- #
+# Quantity
+star_quantity = ['Single', 'Binary', 'Trinary', 'Multiple']
+star_quantity_prob = [10/20, 8/20, 1/20, 1/20]
+
+# Nature of Stars for multiples
+star_nature = ['Same', 'Different', 'Ascending', 'Descending']
+star_nature_prob = (5/20, 5/20, 5/20, 5/20)
+
+# Star type
+star_type = ['Proto', 'T Tauri', 'Main Sequence', 'Red Giant', 'White Dwarf', 'Red Dwarf', 'Neutron', 'Supergiant']
+star_type_prob = [1/20, 1/20, 11/20, 1/20, 2/20, 2/20, 1/20, 1/20]
+

@@ -11,10 +11,10 @@ def random_name (pre=random.randint(1,1000), suf=random.randint(1,1000), tag=ran
     else:
         tag_text = ''
 
-    if pre_only > 95:
+    if pre_only > 90:
         suf_text = ''
 
     return (f'{pre_text}{suf_text}{tag_text}')
 
-print(random_name(include_tag=True))
+print(random_name())
 
