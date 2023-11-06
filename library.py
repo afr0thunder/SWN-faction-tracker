@@ -2128,6 +2128,8 @@ star_type_prob = [1/20, 1/20, 11/20, 1/20, 2/20, 2/20, 1/20, 1/20]
 main_sequence_type = ['O', 'B', 'A', 'F', 'G', 'K', 'M']
 main_sequence_type_prob = [3/100, 3/100, 3/100, 6/100, 5/100, 10/100, 70/100]
 
+# System Size (no table needed?)
+
 # ---------- NON-STELLAR SUBJECTS ---------- #
 # Non-stellar quantity
 nonstellar_quantity = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'more']
@@ -2149,8 +2151,44 @@ primary_gas_prob = [1/12, 1/12, 1/12, 1/12, 1/12, 1/12, 1/12, 1/12, 1/12, 1/12, 
 # Atmospheric Pressure Table, probability is a function of size and density
 pressure = ['Negligible', 'Trace', 'Light', 'Thin', 'Thinner', 'Below Standard', 'Standard', 'High', 'Thick', 'Slightly Dense', 'Dense', 'Very Dense', 'Super Dense', 'Ultra-Dense']
 
-# Axil tilt table
+# Degree of axil tilt table
 axil_tilt = ['None', 'Slight', 'Minor', 'Notable', 'Moderate', 'Large', 'Great', 'Severe', 'Huge', 'Extreme']
 axil_tilt_prob = [1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10]
+
+# Day/Rotation (no table needed?)
+
+# Density is a function of size (no table needed?)
+
+# Hydrosphere type
+liquid_type = ['H2O', 'Ammonia', 'Bromine', 'Caseium', 'Francium', 'Gallium', 'Liquid Nitrogen', 'Liquid Oxygen', 'Mercury', 'Rubidium']
+liquid_type_prob = [11/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20]
+
+# Magnetic Field (no table needed)
+
+# Magnetic Field Variance
+mr_variation = ['No major regional variance', 'Higher at a pole (randomly determined', 'Higher at both poles', 'Higher at equator', 'Higher in random spots', 'Fluxing - Poles', 'Fluxing - Equator', 'Fluxing - Random spots', 'Fluxing - Whole planet', 'Unstable - Poles', 'Unstable - Equator', 'Unstable - Random spots', 'Unstable - Whole planet']
+mr_variation_prob = [50/100, 5/100, 4/100, 11/100, 6/100, 5/100, 5/100, 4/100, 6/100, 1/100, 1/100, 1/100, 1/100]
+
+# Basic 'highest' lifeform table
+highest_lifeform = ['None', 'Microbes', 'Algae', 'Fungi', 'Basic Plants', 'Base Animals', 'Insects', 'Reptiles', 'Mammals', 'Hominids/Apes', 'Sentient']
+highest_lifeform_prob = [5/20, 5/20, 2/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20]
+
+# Primary Terrain
+primary_terrain = ['Aquatic - Deep', 'Aquatic - Shallow', 'Artic/Frozen', 'Canyon', 'Desert', 'Exotic/Impossible/Other', 'Forest', 'Glacier', 'Grassland', 'Hills', 'Islands', 'Jungle', 'Mountains/Valleys', 'Plains', 'Rivers/Lakes', 'Scrubland', 'Swamp/Bog', 'Tundra', 'Unnatural/Artificial', 'Wasteland/Devastation']
+primary_terrain_prob = [1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20, 1/20]
+
+# Number of orbiting bodies
+orbiting_bodies = ['Nothing', '1', '2', '3', '4', '5', '2d4']
+orbiting_bodies_prob = [10/20, 5/20, 1/20, 1/20, 1/20, 1/20]
+
+# Orbiting bodies type
+orbiting_bodies_type = ['Cloud - Dust', 'Cloud - Gas', 'Debris - Natural', 'Debris - Artificial/Junk', 'Moon', 'Ring', 'Artificial Construction']
+orbiting_bodies_type_prob = [2/20, 1/20, 2/20, 2/20, 11/20, 2/20, 2/200]
+
+# Planet Type
+planet_type = ['Terrestrial', 'Gas']
+planet_type_prob = [10/20, 10/20]
+
+# Year/Orbit Duration (no table needed?)
 
 
