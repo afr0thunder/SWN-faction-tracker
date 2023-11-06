@@ -2110,3 +2110,47 @@ name_tag = {
     99: 'Roll again and combine',
     100: 'Roll on Prefix and Suffix Table'
 }
+
+# ---------- STAR PROPERTIES ---------- #
+# Star quantity
+star_quantity = ['Single', 'Binary', 'Trinary', 'Multiple']
+star_quantity_prob = [10/20, 8/20, 1/20, 1/20]
+
+# Nature of Stars for multiples
+star_nature = ['Same', 'Different', 'Ascending', 'Descending']
+star_nature_prob = (5/20, 5/20, 5/20, 5/20)
+
+# Star type
+star_type = ['Proto', 'T Tauri', 'Main Sequence', 'Red Giant', 'White Dwarf', 'Red Dwarf', 'Neutron', 'Supergiant']
+star_type_prob = [1/20, 1/20, 11/20, 1/20, 2/20, 2/20, 1/20, 1/20]
+
+# Type for main_sequence stars
+main_sequence_type = ['O', 'B', 'A', 'F', 'G', 'K', 'M']
+main_sequence_type_prob = [3/100, 3/100, 3/100, 6/100, 5/100, 10/100, 70/100]
+
+# ---------- NON-STELLAR SUBJECTS ---------- #
+# Non-stellar quantity
+nonstellar_quantity = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'more']
+nonstellar_quantity_prob = [1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10]
+
+# Non-stellar type
+nonstellar_type = ['Anomaly/Unknown/Something Else', 'Artificial Structure/Item', 'Asteroid (Group)', 'Asteroid Belt/Field', 'Comet', 'Dust Clouds', 'Oort Cloud', 'Planet - Dwarf/Micro', 'Planet - Gas', 'Planet - Terrestrial/Rocky']
+nonstellar_type_prob = [1/20, 1/20, 1/20, 3/20, 1/20, 1/20, 1/20, 3/20, 4/20, 4/20]
+
+# ---------- PLANET/MOON PROPERTIES ---------- #
+# Planet Size
+planet_size = ['Miniscule', 'Tiny', 'Small', 'Average', 'Large', 'Huge', 'Enormous', 'Massive']
+planet_size_prob = [1/10, 1/10, 1/10, 3/10, 1/10, 1/10, 1/10, 1/10]
+
+# Atmospheric gas table
+primary_gas = ['Ammonia', 'Argon', 'Carbon Dioxide', 'Chlorine', 'Earth-like', 'Helium', 'Hydrogen', 'Icy', 'Methane', 'Nitrogen', 'Oxygen', 'Sulphur']
+primary_gas_prob = [1/12, 1/12, 1/12, 1/12, 1/12, 1/12, 1/12, 1/12, 1/12, 1/12, 1/12, 1/12]
+
+# Atmospheric Pressure Table, probability is a function of size and density
+pressure = ['Negligible', 'Trace', 'Light', 'Thin', 'Thinner', 'Below Standard', 'Standard', 'High', 'Thick', 'Slightly Dense', 'Dense', 'Very Dense', 'Super Dense', 'Ultra-Dense']
+
+# Axil tilt table
+axil_tilt = ['None', 'Slight', 'Minor', 'Notable', 'Moderate', 'Large', 'Great', 'Severe', 'Huge', 'Extreme']
+axil_tilt_prob = [1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10, 1/10]
+
+
