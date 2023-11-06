@@ -12,6 +12,7 @@ HEX_COLOR = "cyan"
 SPEED = 300
 ZOOM_INCREMENT = 1
 NAVIGATE_INCREMENT = 10
+SYSTEM_SET = {(4, 7)}  # temporary for testing, will need to generate based on input
 
 # pygame setup
 pygame.init()
@@ -32,7 +33,7 @@ font = pygame.font.Font(None, 36)
 
 # Initiate left-hand grid screen
 grid_screen = GridWindow(screen, screen.get_width() / 2, screen.get_height())
-sector = Sector((50, 50), screen, seg_length=50)
+sector = Sector((50, 50), screen, SYSTEM_SET, seg_length=50)
 
 while running:
     # poll for events
@@ -45,7 +46,7 @@ while running:
     screen.fill(BACKGROUND_COLOR)
     grid_screen.draw_screen()
 
-    #update mouse coordinates and display
+    # update mouse coordinates and display
     mouse.update_position()
     mouse_position = (mouse.x, mouse.y)
     text = font.render(f'{mouse.x}, {mouse.y}', True, (255, 255, 255))
@@ -64,13 +65,13 @@ while running:
     grid_screen.draw_border()
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP]:
-        sector.corner_y -= NAVIGATE_INCREMENT
     if keys[pygame.K_DOWN]:
+        sector.corner_y -= NAVIGATE_INCREMENT
+    if keys[pygame.K_UP]:
         sector.corner_y += NAVIGATE_INCREMENT
-    if keys[pygame.K_LEFT]:
-        sector.corner_x -= NAVIGATE_INCREMENT
     if keys[pygame.K_RIGHT]:
+        sector.corner_x -= NAVIGATE_INCREMENT
+    if keys[pygame.K_LEFT]:
         sector.corner_x += NAVIGATE_INCREMENT
     if keys[pygame.K_EQUALS]:
         sector.hex_radius += ZOOM_INCREMENT
