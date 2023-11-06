@@ -3,6 +3,7 @@ import random
 import pygame
 from left_grid import Hex, Sector, GridWindow
 from mouse import MousePosition
+from utilities import create_system_set
 
 # ---------- COLORS ---------- #
 BACKGROUND_COLOR = "gray"
@@ -12,7 +13,7 @@ HEX_COLOR = "cyan"
 SPEED = 300
 ZOOM_INCREMENT = 1
 NAVIGATE_INCREMENT = 10
-SYSTEM_SET = {(4, 7)}  # temporary for testing, will need to generate based on input
+SYSTEM_SET = create_system_set()
 
 # pygame setup
 pygame.init()
