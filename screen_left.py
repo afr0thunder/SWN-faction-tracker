@@ -1,4 +1,4 @@
-from solar_classes import Hex
+from classes_solar import Hex
 import pygame
 import math
 
@@ -45,13 +45,13 @@ class Sector:
         self.grid_array = array
         self.grid_space_array = grid_spaces
 
-    def draw_grid(self, mouse_position):
+    def draw_grid(self, mouse_position, mouse_buttons):
         for i in range(len(self.grid_array)):
             if self.grid_space_array[i] in self.system_set:
                 empty = False
             else:
                 empty = True
-            Hex(self.grid_array[i], self.surface, mouse_position, self.grid_space_array[i], color=self.color,
+            Hex(self.grid_array[i], self.surface, mouse_position, mouse_buttons, self.grid_space_array[i], color=self.color,
                 length=self.hex_radius, width=self.line_width, empty=empty)
 
 

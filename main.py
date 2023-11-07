@@ -1,26 +1,31 @@
 # import libraries
-import random
 import pygame
-from left_grid import Hex, Sector, GridWindow
+from screen_left import Sector, GridWindow
 from mouse import MousePosition
 from utilities import create_system_set
+from classes_solar import Hex
 
 # ---------- COLORS ---------- #
 BACKGROUND_COLOR = "gray"
 HEX_COLOR = "cyan"
 
 # ---------- CONSTANTS ---------- #
-SPEED = 300
+SCREEN_WIDTH = 1920
+SCREEN_HEIGHT = 1080
+GRID_WIDTH = 8
+GRID_HEIGHT = 10
 ZOOM_INCREMENT = 1
 NAVIGATE_INCREMENT = 10
-SYSTEM_SET = create_system_set()
+STARTING_SEG_LENGTH = 75
+STARTING_GRID_POSITION = (75, 75)
+SELECTED_GRID_SPACE = (0, 0)
+SYSTEM_SET = create_system_set(row=GRID_HEIGHT, col=GRID_WIDTH)
+
 
 # pygame setup
 pygame.init()
-width = 1280
-height = 720
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption('SWN Faction Tracker')
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption('Stars Without Number: Sector and Faction Tracker')
 clock = pygame.time.Clock()
 running = True
 dt = 0
@@ -34,31 +39,44 @@ font = pygame.font.Font(None, 36)
 
 # Initiate left-hand grid screen
 grid_screen = GridWindow(screen, screen.get_width() / 2, screen.get_height())
-sector = Sector((50, 50), screen, SYSTEM_SET, seg_length=50)
+sector = Sector(STARTING_GRID_POSITION, screen, SYSTEM_SET, seg_length=STARTING_SEG_LENGTH, grid_width=GRID_WIDTH, grid_height=GRID_HEIGHT)
 
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
+    mouse.update_self()
+    mouse_position = (mouse.x, mouse.y)
+    mouse_buttons = mouse.buttons
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            # Here, check if the event was a click on the left mouse button
+            if event.button == 1:  # 1 is the left mouse button
+                # Now check each hex to see if it was clicked
+                for i in range(len(sector.grid_array)):
+                    hexagon = Hex(sector.grid_array[i], screen, mouse_position, mouse_buttons, sector.grid_space_array[i],
+                              color=sector.color, length=sector.hex_radius, width=sector.line_width,
+                              empty=sector.grid_space_array[i] not in sector.system_set)
+                    if hexagon.contains_point(mouse_position):
+                        SELECTED_GRID_SPACE = sector.grid_space_array[i]
+                        break  # No need to check the other hexes
 
     # update screen elements
     screen.fill(BACKGROUND_COLOR)
     grid_screen.draw_screen()
 
     # update mouse coordinates and display
-    mouse.update_position()
-    mouse_position = (mouse.x, mouse.y)
-    text = font.render(f'{mouse.x}, {mouse.y}', True, (255, 255, 255))
-    screen.blit(text, ((width * 0.75) - text.get_width() // 2, height // 2 - text.get_height() // 2))
+
+    text = font.render(f'{SELECTED_GRID_SPACE[0] + 1}, {SELECTED_GRID_SPACE[1] + 1}', True, (255, 255, 255))
+    screen.blit(text, ((SCREEN_WIDTH * 0.75) - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2))
 
     # Set clip area for the left-hand side of the screen
     clip_area = pygame.Rect(0, 0, screen.get_width() / 2, screen.get_height())
     screen.set_clip(clip_area)
     # Draw hexagonal grid within the clip area
     sector.create_grid()
-    sector.draw_grid(mouse_position)
+    sector.draw_grid(mouse_position, mouse_buttons)
     # Reset clip area to the whole screen
     screen.set_clip(None)
 

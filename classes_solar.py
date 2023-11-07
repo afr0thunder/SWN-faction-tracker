@@ -3,7 +3,8 @@ import math
 
 
 class Hex:
-    def __init__(self, center_point, surface, mouse_position, grid_space, color='black', length=10, width=1, empty=True):
+    def __init__(self, center_point, surface, mouse_position, mouse_buttons, grid_space, color='black', length=10,
+                 width=1, empty=True):
         self.center = center_point
         self.x = center_point[0]
         self.y = center_point[1]
@@ -13,6 +14,7 @@ class Hex:
         self.hex_radius = length
         self.grid_space = grid_space
         self.current_mouse = mouse_position
+        self.current_mouse_buttons = mouse_buttons
         self.empty = empty
         self.system = None
         self.draw_hex(self.center)
@@ -35,16 +37,22 @@ class Hex:
 
         adjustment = 0.75
 
-        if self.center[0] - (self.hex_radius * adjustment) < self.current_mouse[0] < self.center[0] + (
-                self.hex_radius * adjustment) and self.center[1] - (self.hex_radius * adjustment) < self.current_mouse[
-            1] < \
-                self.center[1] + (self.hex_radius * adjustment):
+        if self.contains_point(self.current_mouse):
             self.color = 'cyan'
             self.width = 0
 
         pygame.draw.polygon(self.surface, self.color, (p1, p2, p3, p4, p5, p6), self.width)
         if not self.empty:
             self.system = SolarSystem(self.center, self.surface, self.current_mouse, self.grid_space, self.hex_radius)
+
+    def contains_point(self, point):
+        adjustment = 0.75
+        if self.center[0] - (self.hex_radius * adjustment) < point[0] < self.center[0] + (
+                self.hex_radius * adjustment) and self.center[1] - (self.hex_radius * adjustment) < point[1] < \
+                self.center[1] + (self.hex_radius * adjustment):
+            return True
+        return False
+
 
 
 class SolarSystem:
