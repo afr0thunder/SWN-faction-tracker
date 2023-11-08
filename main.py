@@ -3,7 +3,7 @@ import pygame
 from screen_left import Sector, GridWindow
 from screen_right import Button, Text, Tabs, TabWindow
 from mouse import MousePosition
-from utilities import create_system_set
+from random_generators import create_system_set
 from classes_solar import Hex
 
 # ---------- COLORS ---------- #
@@ -23,11 +23,14 @@ GRID_HEIGHT = 10
 FONT_SIZE = 20
 ZOOM_INCREMENT = 1
 NAVIGATE_INCREMENT = 10
+DRAG_SENSITIVITY = 0.6
 STARTING_SEG_LENGTH = 75
 STARTING_GRID_POSITION = (75, 75)
 SELECTED_GRID_SPACE = (0, 0)
 SYSTEM_SET = create_system_set(row=GRID_HEIGHT, col=GRID_WIDTH)
 TAB_ARRAY = ['SYSTEM', 'STARS', 'PLANETS', 'ANOMALIES', 'FACTION', 'OTHER']
+dragging = False
+starting_position = (0, 0)
 
 # pygame setup
 pygame.init()
@@ -54,10 +57,18 @@ main_index = Tabs(screen, TAB_ARRAY, SCREEN_WIDTH // 2, 30, (SCREEN_WIDTH // 2, 
 tab_window = TabWindow(screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT - 30 - 30 - 10, (SCREEN_WIDTH // 2, 30), color=LIGHT_BLUE, text_color=DARK_BLUE, font_size=FONT_SIZE)
 
 # Buttons
-random_button = Button(screen, 'GENERATE RANDOM', 150, 30, ((SCREEN_WIDTH // 2) + 75 + 150, SCREEN_HEIGHT - 20), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+system_button = Button(screen, 'GENERATE SYSTEMS', 150, 30, ((SCREEN_WIDTH - 75 - 5 - 150 - 5 - 150 - 5 - 150 - 5 - 150 - 5), (SCREEN_HEIGHT - 20)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+exit_button = Button(screen, 'EXIT', 150, 30, ((SCREEN_WIDTH - 75 - 5), (SCREEN_HEIGHT - 20)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+load_button = Button(screen, 'LOAD', 150, 30, ((SCREEN_WIDTH - 75 - 5 - 150 - 5), (SCREEN_HEIGHT - 20)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+save_button = Button(screen, 'SAVE', 150, 30, ((SCREEN_WIDTH - 75 - 5 - 150 - 5 - 150 - 5), (SCREEN_HEIGHT - 20)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+grid_height_up = Button(screen, '+', 20, 15, (((SCREEN_WIDTH // 2) + 10 + 4), (SCREEN_HEIGHT - 28)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+grid_height_down = Button(screen, '-', 20, 15, (((SCREEN_WIDTH // 2) + 10 + 4), (SCREEN_HEIGHT - 12)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+grid_width_up = Button(screen, '+', 20, 15, (((SCREEN_WIDTH // 2) + 10 + 4 + 150), (SCREEN_HEIGHT - 28)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+grid_width_down = Button(screen, '-', 20, 15, (((SCREEN_WIDTH // 2) + 10 + 4 + 150), (SCREEN_HEIGHT - 12)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+faction_button = Button(screen, 'GENERATE FACTIONS', 150, 30, ((SCREEN_WIDTH - 75 - 5 - 150 - 5 - 150 - 5 - 150 - 5), (SCREEN_HEIGHT - 20)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
 
 # Texts
-dimension_text = Text(screen, f'{GRID_HEIGHT} rows x {GRID_WIDTH} cols', 150, 30, ((SCREEN_WIDTH // 2) + 75, SCREEN_HEIGHT - 20), color=BACKGROUND_COLOR, text_color=DARK_BLUE, font_size=FONT_SIZE)
+dimension_text = Text(screen, f'{GRID_HEIGHT} rows x {GRID_WIDTH} cols', 50, 30, ((SCREEN_WIDTH // 2) + 89, SCREEN_HEIGHT - 20), color=BACKGROUND_COLOR, text_color=DARK_BLUE, font_size=FONT_SIZE)
 
 while running:
     # update mouse coordinates and display
@@ -70,6 +81,32 @@ while running:
         # pygame.QUIT event means the user clicked X to close your window
         if event.type == pygame.QUIT:
             running = False
+
+        # Handle mouse wheel scrolling for zooming in and out
+        if event.type == pygame.MOUSEWHEEL:
+            # Check if the mouse is on the left-hand side (where the grid is)
+            if mouse_position[0] < SCREEN_WIDTH // 2:
+                # Adjust the hex_radius based on the scroll direction
+                # event.y > 0 means scrolling up, event.y < 0 means scrolling down
+                if event.y > 0:
+                    sector.hex_radius += ZOOM_INCREMENT
+                elif event.y < 0:
+                    sector.hex_radius -= ZOOM_INCREMENT
+                # Prevent the hex_radius from getting too small or too big
+                sector.hex_radius = max(10, min(sector.hex_radius, 200))
+
+        # Drag the grid screen with the mouse
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if mouse_position[0] < SCREEN_WIDTH // 2:
+                dragging = True
+                pygame.mouse.get_rel()
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            dragging = False
+        if dragging:
+            change = pygame.mouse.get_rel()
+            sector.corner_x += change[0] * DRAG_SENSITIVITY
+            sector.corner_y += change[1] * DRAG_SENSITIVITY
+
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # Check if the event was a click on the left mouse button
             if event.button == 1 and mouse_position[0] <= SCREEN_WIDTH // 2:  # 1 is the left mouse button
@@ -82,8 +119,24 @@ while running:
                     if hexagon.contains_point(mouse_position):
                         SELECTED_GRID_SPACE = sector.grid_space_array[i]
                         break  # No need to check the other hexes
+
             elif event.button == 1 and mouse_position[0] >= SCREEN_WIDTH // 2:
-                if random_button.contains_point(mouse_position):
+                if grid_height_up.contains_point(mouse_position):
+                    GRID_HEIGHT += 1
+                if grid_height_down.contains_point(mouse_position):
+                    GRID_HEIGHT -= 1
+                if grid_width_up.contains_point(mouse_position):
+                    GRID_WIDTH += 1
+                if grid_width_down.contains_point(mouse_position):
+                    GRID_WIDTH -= 1
+                dimension_text.text = f'{GRID_HEIGHT} rows x {GRID_WIDTH} cols'
+
+                if exit_button.contains_point(mouse_position):
+                    running = False
+
+                if system_button.contains_point(mouse_position):
+                    sector.grid_width = GRID_WIDTH
+                    sector.grid_height = GRID_HEIGHT
                     SYSTEM_SET = create_system_set(row=GRID_HEIGHT, col=GRID_WIDTH)
                     sector.system_set = SYSTEM_SET
                 main_index.update_tab(mouse_position)
@@ -95,8 +148,17 @@ while running:
     # Draw Tabs, Buttons, and Texts
     main_index.draw_tabs()
     tab_window.draw_tab()
-    random_button.update(mouse_position)
+    system_button.update(mouse_position)
+    faction_button.update((mouse_position))
+    exit_button.update(mouse_position)
+    load_button.update(mouse_position)
+    save_button.update(mouse_position)
+    grid_height_up.update(mouse_position)
+    grid_height_down.update(mouse_position)
+    grid_width_up.update(mouse_position)
+    grid_width_down.update(mouse_position)
     dimension_text.draw_text()
+
 
     text = font.render(f'{SELECTED_GRID_SPACE[0] + 1}, {SELECTED_GRID_SPACE[1] + 1}', True, TEXT_WHITE)
     screen.blit(text, ((SCREEN_WIDTH * 0.75) - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2))
