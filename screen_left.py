@@ -19,16 +19,6 @@ class Sector:
         self.system_set = system_set
         self.create_grid()
 
-    def print_attributes(self):
-        print(f'Corner: {self.corner}')
-        print(f'Surface: {self.surface}')
-        print(f'Color: {self.color}')
-        print(f'Segment Length: {self.hex_radius}')
-        print(f'Line Width: {self.line_width}')
-        print(f'Grid Rows: {self.grid_width}')
-        print(f'Grid Columns: {self.grid_height}')
-        print(f'Grid Array Length: {len(self.grid_array)}')
-
     def create_grid(self):
         array = []
         grid_spaces = []
