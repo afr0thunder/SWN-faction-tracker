@@ -4,12 +4,13 @@ import math
 
 class Hex:
     def __init__(self, center_point, surface, mouse_position, mouse_buttons, grid_space, color='black', length=10,
-                 width=1, empty=True):
+                 width=1, empty=True, highlight_color='yellow'):
         self.center = center_point
         self.x = center_point[0]
         self.y = center_point[1]
         self.surface = surface
         self.color = color
+        self.hightlight_color = highlight_color
         self.width = width
         self.hex_radius = length
         self.grid_space = grid_space
@@ -38,7 +39,7 @@ class Hex:
         adjustment = 0.75
 
         if self.contains_point(self.current_mouse):
-            self.color = 'cyan'
+            self.color = self.hightlight_color
             self.width = 0
 
         pygame.draw.polygon(self.surface, self.color, (p1, p2, p3, p4, p5, p6), self.width)

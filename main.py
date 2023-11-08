@@ -1,20 +1,26 @@
 # import libraries
 import pygame
 from screen_left import Sector, GridWindow
-from screen_right import Button
+from screen_right import Button, Text
 from mouse import MousePosition
 from utilities import create_system_set
 from classes_solar import Hex
 
 # ---------- COLORS ---------- #
-BACKGROUND_COLOR = "gray"
-HEX_COLOR = "cyan"
+DARK_BLUE = (22, 72, 99)
+MEDIUM_BLUE = (66, 125, 157)
+GRAY_BLUE = (155, 190, 200)
+LIGHT_BLUE = (221, 242, 253)
+TEXT_WHITE = (255, 255, 255)
+BACKGROUND_COLOR = GRAY_BLUE
+HEX_HIGHLIGHT_COLOR = 'cyan'
 
 # ---------- CONSTANTS ---------- #
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 GRID_WIDTH = 8
 GRID_HEIGHT = 10
+FONT_SIZE = 20
 ZOOM_INCREMENT = 1
 NAVIGATE_INCREMENT = 10
 STARTING_SEG_LENGTH = 75
@@ -38,9 +44,12 @@ mouse = MousePosition()
 font = pygame.font.Font(None, 36)
 
 # Initiate left-hand grid screen
-grid_screen = GridWindow(screen, screen.get_width() / 2, screen.get_height())
+grid_screen = GridWindow(screen, screen.get_width() / 2, screen.get_height(), border_color=DARK_BLUE)
 sector = Sector(STARTING_GRID_POSITION, screen, SYSTEM_SET, seg_length=STARTING_SEG_LENGTH, grid_width=GRID_WIDTH,
-                grid_height=GRID_HEIGHT)
+                grid_height=GRID_HEIGHT, hex_highlight_color=HEX_HIGHLIGHT_COLOR)
+
+random_button = Button(screen, 'GENERATE RANDOM', 150, 30, ((SCREEN_WIDTH * 0.75), SCREEN_HEIGHT * 0.25), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+test_text = Text(screen, 'sample text', 150, 30, ((SCREEN_WIDTH // 2) + 75, SCREEN_HEIGHT - 15), color=BACKGROUND_COLOR, text_color=DARK_BLUE, font_size=FONT_SIZE)
 
 while running:
     # update mouse coordinates and display
@@ -55,7 +64,7 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # Check if the event was a click on the left mouse button
-            if event.button == 1:  # 1 is the left mouse button
+            if event.button == 1 and mouse_position[0] <= SCREEN_WIDTH // 2:  # 1 is the left mouse button
                 # Now check each hex to see if it was clicked
                 for i in range(len(sector.grid_array)):
                     hexagon = Hex(sector.grid_array[i], screen, mouse_position, mouse_buttons,
@@ -65,14 +74,19 @@ while running:
                     if hexagon.contains_point(mouse_position):
                         SELECTED_GRID_SPACE = sector.grid_space_array[i]
                         break  # No need to check the other hexes
+            elif event.button == 1 and mouse_position[0] >= SCREEN_WIDTH // 2:
+                if random_button.contains_point(mouse_position):
+                    SYSTEM_SET = create_system_set(row=GRID_HEIGHT, col=GRID_WIDTH)
+                    sector.system_set = SYSTEM_SET
 
     # update screen elements
     screen.fill(BACKGROUND_COLOR)
     grid_screen.draw_screen()
 
-    random_button = Button(screen, 'GENERATE RANDOM', 150, 30, ((SCREEN_WIDTH * 0.75), SCREEN_HEIGHT * 0.25), font_size=20)
+    random_button.update(mouse_position)
+    test_text.draw_text()
 
-    text = font.render(f'{SELECTED_GRID_SPACE[0] + 1}, {SELECTED_GRID_SPACE[1] + 1}', True, (255, 255, 255))
+    text = font.render(f'{SELECTED_GRID_SPACE[0] + 1}, {SELECTED_GRID_SPACE[1] + 1}', True, TEXT_WHITE)
     screen.blit(text, ((SCREEN_WIDTH * 0.75) - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2))
 
     # Set clip area for the left-hand side of the screen

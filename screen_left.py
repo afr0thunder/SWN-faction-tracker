@@ -4,11 +4,12 @@ import math
 
 
 class Sector:
-    def __init__(self, grid_corner, surface, system_set, color='black', seg_length=10, line_width=1, grid_height=10, grid_width=8):
+    def __init__(self, grid_corner, surface, system_set, color='black', seg_length=10, line_width=1, grid_height=10, grid_width=8, hex_highlight_color='yellow'):
         self.corner_x = grid_corner[0]
         self.corner_y = grid_corner[1]
         self.surface = surface
         self.color = color
+        self.hex_highlight_color = hex_highlight_color
         self.hex_radius = seg_length
         self.line_width = line_width
         self.grid_width = grid_width
@@ -52,8 +53,7 @@ class Sector:
             else:
                 empty = True
             Hex(self.grid_array[i], self.surface, mouse_position, mouse_buttons, self.grid_space_array[i], color=self.color,
-                length=self.hex_radius, width=self.line_width, empty=empty)
-
+                length=self.hex_radius, width=self.line_width, empty=empty, highlight_color=self.hex_highlight_color)
 
 
 class GridWindow:
