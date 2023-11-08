@@ -55,6 +55,9 @@ tab_window = TabWindow(screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT - 30 - 30 - 10, 
 
 # Buttons
 random_button = Button(screen, 'GENERATE RANDOM', 150, 30, ((SCREEN_WIDTH // 2) + 75 + 150, SCREEN_HEIGHT - 20), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+exit_button = Button(screen, 'EXIT', 150, 30, ((SCREEN_WIDTH - 75 - 5), (SCREEN_HEIGHT - 20)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+load_button = Button(screen, 'LOAD', 150, 30, ((SCREEN_WIDTH - 75 - 5 - 150 - 5), (SCREEN_HEIGHT - 20)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+save_button = Button(screen, 'SAVE', 150, 30, ((SCREEN_WIDTH - 75 - 5 - 150 - 5 - 150 - 5), (SCREEN_HEIGHT - 20)), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
 
 # Texts
 dimension_text = Text(screen, f'{GRID_HEIGHT} rows x {GRID_WIDTH} cols', 150, 30, ((SCREEN_WIDTH // 2) + 75, SCREEN_HEIGHT - 20), color=BACKGROUND_COLOR, text_color=DARK_BLUE, font_size=FONT_SIZE)
@@ -83,6 +86,8 @@ while running:
                         SELECTED_GRID_SPACE = sector.grid_space_array[i]
                         break  # No need to check the other hexes
             elif event.button == 1 and mouse_position[0] >= SCREEN_WIDTH // 2:
+                if exit_button.contains_point(mouse_position):
+                    running = False
                 if random_button.contains_point(mouse_position):
                     SYSTEM_SET = create_system_set(row=GRID_HEIGHT, col=GRID_WIDTH)
                     sector.system_set = SYSTEM_SET
@@ -96,6 +101,9 @@ while running:
     main_index.draw_tabs()
     tab_window.draw_tab()
     random_button.update(mouse_position)
+    exit_button.update(mouse_position)
+    load_button.update(mouse_position)
+    save_button.update(mouse_position)
     dimension_text.draw_text()
 
     text = font.render(f'{SELECTED_GRID_SPACE[0] + 1}, {SELECTED_GRID_SPACE[1] + 1}', True, TEXT_WHITE)

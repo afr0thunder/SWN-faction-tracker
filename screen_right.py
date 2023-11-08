@@ -92,6 +92,7 @@ class Tabs:
         self.text_color = text_color
         self.font_size = font_size
         self.selected_tab = 0
+        self.selected_tab_title = self.tabs[0]
         self.tab_length = width / len(tabs_array)
         self.draw_tabs()
 
@@ -126,6 +127,7 @@ class Tabs:
             height = self.height
             if self.contains_point(mouse_position, center, height, width):
                 self.selected_tab = i
+                self.selected_tab_title = self.tabs[i]
 
 
 class TabWindow:
