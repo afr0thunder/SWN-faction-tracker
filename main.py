@@ -1,7 +1,7 @@
 # import libraries
 import pygame
 from screen_left import Sector, GridWindow
-from screen_right import Button, Text
+from screen_right import Button, Text, Tabs, TabWindow
 from mouse import MousePosition
 from utilities import create_system_set
 from classes_solar import Hex
@@ -27,6 +27,7 @@ STARTING_SEG_LENGTH = 75
 STARTING_GRID_POSITION = (75, 75)
 SELECTED_GRID_SPACE = (0, 0)
 SYSTEM_SET = create_system_set(row=GRID_HEIGHT, col=GRID_WIDTH)
+TAB_ARRAY = ['SYSTEM', 'STARS', 'PLANETS', 'ANOMALIES', 'FACTION', 'OTHER']
 
 # pygame setup
 pygame.init()
@@ -48,8 +49,15 @@ grid_screen = GridWindow(screen, screen.get_width() / 2, screen.get_height(), bo
 sector = Sector(STARTING_GRID_POSITION, screen, SYSTEM_SET, seg_length=STARTING_SEG_LENGTH, grid_width=GRID_WIDTH,
                 grid_height=GRID_HEIGHT, hex_highlight_color=HEX_HIGHLIGHT_COLOR)
 
-random_button = Button(screen, 'GENERATE RANDOM', 150, 30, ((SCREEN_WIDTH * 0.75), SCREEN_HEIGHT * 0.25), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
-test_text = Text(screen, 'sample text', 150, 30, ((SCREEN_WIDTH // 2) + 75, SCREEN_HEIGHT - 15), color=BACKGROUND_COLOR, text_color=DARK_BLUE, font_size=FONT_SIZE)
+# Define tabs index for right screen
+main_index = Tabs(screen, TAB_ARRAY, SCREEN_WIDTH // 2, 30, (SCREEN_WIDTH // 2, 0), color=BACKGROUND_COLOR, selected_color=LIGHT_BLUE, text_color=DARK_BLUE, font_size=FONT_SIZE)
+tab_window = TabWindow(screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT - 30 - 30 - 10, (SCREEN_WIDTH // 2, 30), color=LIGHT_BLUE, text_color=DARK_BLUE, font_size=FONT_SIZE)
+
+# Buttons
+random_button = Button(screen, 'GENERATE RANDOM', 150, 30, ((SCREEN_WIDTH // 2) + 75 + 150, SCREEN_HEIGHT - 20), font_size=FONT_SIZE, color=DARK_BLUE, text_color=LIGHT_BLUE)
+
+# Texts
+dimension_text = Text(screen, f'{GRID_HEIGHT} rows x {GRID_WIDTH} cols', 150, 30, ((SCREEN_WIDTH // 2) + 75, SCREEN_HEIGHT - 20), color=BACKGROUND_COLOR, text_color=DARK_BLUE, font_size=FONT_SIZE)
 
 while running:
     # update mouse coordinates and display
@@ -78,13 +86,17 @@ while running:
                 if random_button.contains_point(mouse_position):
                     SYSTEM_SET = create_system_set(row=GRID_HEIGHT, col=GRID_WIDTH)
                     sector.system_set = SYSTEM_SET
+                main_index.update_tab(mouse_position)
 
     # update screen elements
     screen.fill(BACKGROUND_COLOR)
     grid_screen.draw_screen()
 
+    # Draw Tabs, Buttons, and Texts
+    main_index.draw_tabs()
+    tab_window.draw_tab()
     random_button.update(mouse_position)
-    test_text.draw_text()
+    dimension_text.draw_text()
 
     text = font.render(f'{SELECTED_GRID_SPACE[0] + 1}, {SELECTED_GRID_SPACE[1] + 1}', True, TEXT_WHITE)
     screen.blit(text, ((SCREEN_WIDTH * 0.75) - text.get_width() // 2, SCREEN_HEIGHT // 2 - text.get_height() // 2))
